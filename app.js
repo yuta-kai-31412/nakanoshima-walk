@@ -99,7 +99,8 @@ function initMap() {
     L.tileLayer('https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.jpg?api_key=5c66fbf5-14c0-4ebe-b497-002fbf1bf342', {
         attribution: '&copy; <a href="https://stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://stamen.com/" target="_blank">Stamen Design</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors',
         minZoom: 1,
-        maxZoom: 16
+        maxZoom: 20,
+        maxNativeZoom: 16
     }).addTo(appState.map);
 
     const colorInactive = '#a0d8ef'; // Light Blue
