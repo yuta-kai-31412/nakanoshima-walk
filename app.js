@@ -114,8 +114,8 @@ function initMap() {
                 L.latLng(end.lat, end.lng)
             ],
             router: L.Routing.osrmv1({
-                serviceUrl: 'https://router.project-osrm.org/route/v1',
-                profile: 'foot' // Set profile to pedestrian/foot
+                serviceUrl: 'https://routing.openstreetmap.de/routed-foot/route/v1',
+                profile: 'foot'
             }),
             routeWhileDragging: false,
             addWaypoints: false,
