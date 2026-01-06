@@ -58,12 +58,14 @@ function init() {
 function renderStart(container) {
     container.innerHTML = `
         <div class="container centered fade-in">
-            <div class="start-logo">🏙️</div>
-            <h1>NAKANOSHIMA<br>URBAN AXIS</h1>
-            <div class="concept-text">
-                都市の進化を辿る、<br>中之島・街歩き。
+            <div class="glass-panel">
+                <div class="start-logo">🏙️</div>
+                <h1>NAKANOSHIMA<br>TIME TRAVEL</h1>
+                <div class="concept-text">
+                    都市の進化を辿る、<br>中之島・街歩き。
+                </div>
+                <p>スマホを「街の探知機」に変えて、<br>歴史と現代が交差する景色を記憶しましょう。</p>
             </div>
-            <p>スマホを「街の探知機」に変えて、<br>見上げる景色を記憶しましょう。</p>
             <div class="sticky-bottom">
                 <button class="btn btn-primary" data-action="switch-view" data-id="map">EXPLORE START</button>
             </div>
@@ -103,8 +105,8 @@ function initMap() {
         maxNativeZoom: 16
     }).addTo(appState.map);
 
-    const colorInactive = '#a0d8ef'; // Light Blue
-    const colorActive = '#ff8c00';   // Vibrant Orange
+    const colorInactive = '#B0BEC5'; // Slate Blue Gray
+    const colorActive = '#B71C1C';   // Brick Red
 
     // Draw Routes (Road-based via OSRM - Foot profile)
     for (let i = 0; i < SPOTS.length - 1; i++) {
@@ -140,7 +142,7 @@ function initMap() {
     }
 
     // Draw Markers
-    const circledNumbers = ['①', '②', '③', '④', '⑤', '⑥'];
+    const spotNumbers = ['1', '2', '3', '4', '5', '6'];
 
     SPOTS.forEach((spot) => {
         const isVisited = appState.visited.includes(spot.id);
@@ -148,14 +150,14 @@ function initMap() {
         if (!spot.isNavigationOnly) {
             // If spot.id is 1-6, use circledNumbers[0-5]
             const index = typeof spot.id === 'number' ? spot.id - 1 : -1;
-            label = circledNumbers[index] || spot.id;
+            label = spotNumbers[index] || spot.id;
         }
 
         const icon = L.divIcon({
             className: 'custom-div-icon',
             html: `<div class="custom-marker ${isVisited ? 'visited' : 'inactive'}">${isVisited ? '✓' : label}</div>`,
-            iconSize: [36, 36],
-            iconAnchor: [18, 18]
+            iconSize: [40, 40],
+            iconAnchor: [20, 20]
         });
 
         const marker = L.marker([spot.lat, spot.lng], { icon }).addTo(appState.map);
@@ -187,8 +189,7 @@ function renderDetail(container) {
                 <img src="${spot.image}" class="detail-img" alt="${spot.title}">
             </div>
 
-            <!-- Always visible Info Section -->
-            <div class="info-section">
+            <div class="glass-panel info-section">
                 <div class="info-item">
                     <h3>都市計画のポイント</h3>
                     <p>${spot.points}</p>
