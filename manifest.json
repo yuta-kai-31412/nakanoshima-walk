@@ -1,0 +1,18 @@
+{
+  "name": "中之島・都市軸の変遷を辿る街歩き",
+  "short_name": "中之島しおり",
+  "description": "大阪・中之島の都市計画を学ぶ街歩きアプリ",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#0055ff",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/854/854878.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
