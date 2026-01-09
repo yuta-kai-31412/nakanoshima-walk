@@ -80,7 +80,7 @@ function renderMap(container) {
     container.innerHTML = `
         <div class="container fade-in" style="padding-bottom: 8rem;">
             <h2>EXPLORATION MAP</h2>
-            <p>${visitedCount} / ${totalCount} SPOTS DISCOVERED</p>
+            <p>${visitedCount} / ${totalCount - 2} SPOTS DISCOVERED</p>
             <div id="map"></div>
         </div>
     `;
@@ -211,7 +211,7 @@ function renderDetail(container) {
                     <p>この風景を撮影して、あなたの「しおり」に保存しましょう。</p>
                     <input type="file" id="camera-input" accept="image/*" capture="environment" style="display: none;">
                     <button class="btn btn-primary" data-action="take-photo">
-                        📷 写真を撮る
+                        写真を撮る
                     </button>
                 </div>
                 ` : `
@@ -221,7 +221,7 @@ function renderDetail(container) {
                     </div>
                     <div class="photo-footer-actions">
                         <a href="${photos[0]}" download="nakanoshima_${spot.id}.jpg" class="btn btn-secondary btn-save-large">
-                            💾 この画像を端末に保存
+                            この画像を端末に保存
                         </a>
                     </div>
                 </div>
