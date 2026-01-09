@@ -98,15 +98,14 @@ function initMap() {
         attributionControl: false
     }).setView([34.6935, 135.4950], 15);
 
-    L.tileLayer('https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.jpg?api_key=5c66fbf5-14c0-4ebe-b497-002fbf1bf342', {
-        attribution: '&copy; <a href="https://stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://stamen.com/" target="_blank">Stamen Design</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors',
-        minZoom: 1,
-        maxZoom: 20,
-        maxNativeZoom: 16
+    // Use custom Maputnik style (MapLibre GL) via embedded JS object to avoid CORS issues
+    L.maplibreGL({
+        style: mapStyle, // Loaded from style_data.js
+        attribution: '&copy; <a href="https://stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'
     }).addTo(appState.map);
 
-    const colorInactive = '#B0BEC5'; // Slate Blue Gray
-    const colorActive = '#B71C1C';   // Brick Red
+    const colorInactive = '#757575'; // Dark Gray
+    const colorActive = '#1976D2';   // Ocean Blue (Matches primary)
 
     // Draw Routes (Road-based via OSRM - Foot profile)
     for (let i = 0; i < SPOTS.length - 1; i++) {
@@ -142,7 +141,7 @@ function initMap() {
     }
 
     // Draw Markers
-    const spotNumbers = ['1', '2', '3', '4', '5', '6'];
+    const spotNumbers = ['1', '2', '3', '4', '5', '6', '7', '8'];
 
     SPOTS.forEach((spot) => {
         const isVisited = appState.visited.includes(spot.id);
@@ -156,8 +155,8 @@ function initMap() {
         const icon = L.divIcon({
             className: 'custom-div-icon',
             html: `<div class="custom-marker ${isVisited ? 'visited' : 'inactive'}">${isVisited ? '✓' : label}</div>`,
-            iconSize: [40, 40],
-            iconAnchor: [20, 20]
+            iconSize: [32, 32],
+            iconAnchor: [16, 16]
         });
 
         const marker = L.marker([spot.lat, spot.lng], { icon }).addTo(appState.map);
@@ -185,7 +184,7 @@ function renderDetail(container) {
             </div>
             <h1>${spot.title}</h1>
             
-            <div class="detail-img-wrap" style="${hasPhoto ? 'display: none;' : ''}">
+            <div class="detail-img-wrap">
                 <img src="${spot.image}" class="detail-img" alt="${spot.title}">
             </div>
 
