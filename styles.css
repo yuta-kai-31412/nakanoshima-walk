@@ -48,6 +48,7 @@ h3 {
     justify-content: center;
     min-height: 100vh;
     text-align: center;
+    padding: 1.5rem;
 }
 
 /* Glassmorphism */
@@ -63,15 +64,15 @@ h3 {
 
 /* Start Screen */
 .start-logo {
-    font-size: 5rem;
-    margin-bottom: 2rem;
+    font-size: 4rem;
+    margin-bottom: 1rem;
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
 }
 
 .concept-text {
     font-size: 1.2rem;
     color: var(--primary-color);
-    margin: 1.5rem 0;
+    margin: 1rem 0;
     font-weight: 700;
 }
 
