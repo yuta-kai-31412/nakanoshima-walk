@@ -57,17 +57,17 @@ function init() {
 
 function renderStart(container) {
     container.innerHTML = `
-        <div class="container centered fade-in" style="background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.4)), url('./images/spot1.png'); background-size: cover; background-position: center; min-height: 100vh; width: 100vw; margin: 0; max-width: none;">
-            <div class="glass-panel" style="max-width: 85%; width: 500px;">
-                <div class="start-logo" style="margin-bottom: 1rem;">🌆</div>
-                <h1 style="color: white; font-size: 2.5rem; text-shadow: 0 4px 10px rgba(0,0,0,0.2);">NAKANOSHIMA<br>TIME TRAVEL</h1>
-                <div class="concept-text" style="color: rgba(255,255,255,0.9); font-size: 1.1rem; border-left: 3px solid white; padding-left: 1rem; text-align: left; margin: 2rem auto; width: fit-content;">
+        <div class="container centered fade-in">
+            <div class="glass-panel">
+                <div class="start-logo">🏙️</div>
+                <h1>NAKANOSHIMA<br>TIME TRAVEL</h1>
+                <div class="concept-text">
                     都市の進化を辿る、<br>中之島・街歩き。
                 </div>
-                <p style="color: white; opacity: 0.8; font-weight: 500;">スマホを「街の探知機」に変えて、<br>歴史と現代が交差する景観を巡る。</p>
-                <div style="margin-top: 3rem;">
-                    <button class="btn btn-primary" style="background: white; color: var(--primary-color); width: 100%;" data-action="switch-view" data-id="map">EXPLORE START</button>
-                </div>
+                <p>スマホを「街の探知機」に変えて、<br>歴史と現代が交差する景色を記憶しましょう。</p>
+            </div>
+            <div class="sticky-bottom">
+                <button class="btn btn-primary" data-action="switch-view" data-id="map">EXPLORE START</button>
             </div>
         </div>
     `;
@@ -75,17 +75,13 @@ function renderStart(container) {
 
 function renderMap(container) {
     const visitedCount = appState.visited.length;
-    const totalCount = SPOTS.filter(s => !s.isNavigationOnly).length;
+    const totalCount = SPOTS.length;
 
     container.innerHTML = `
-        <div class="fade-in" style="height: 100vh; position: relative;">
-            <div style="position: absolute; top: 20px; left: 20px; right: 20px; z-index: 1000;">
-                <div class="glass-panel" style="padding: 1rem 1.5rem; border-radius: 20px; background: rgba(255,255,255,0.6);">
-                    <h2 style="margin: 0; font-size: 1rem; color: var(--primary-color);">EXPLORATION MAP</h2>
-                    <p style="margin: 0; font-size: 0.8rem; font-weight: 700; opacity: 0.7;">${visitedCount} / ${totalCount} SPOTS DISCOVERED</p>
-                </div>
-            </div>
-            <div id="map" style="height: 100%; border-radius: 0;"></div>
+        <div class="container fade-in" style="padding-bottom: 8rem;">
+            <h2>EXPLORATION MAP</h2>
+            <p>${visitedCount} / ${totalCount - 2} SPOTS DISCOVERED</p>
+            <div id="map"></div>
         </div>
     `;
 
@@ -181,56 +177,73 @@ function renderDetail(container) {
     const hasPhoto = photos.length > 0;
 
     container.innerHTML = `
-        <div class="spot-card-container fade-in">
-            <div class="spot-card">
-                <div class="card-bg-image" style="background-image: url('${spot.image}')"></div>
-                <div class="card-gradient-overlay"></div>
-                
-                <div class="card-close-btn" data-action="switch-view" data-id="map">✕</div>
+        <div class="container fade-in" style="padding-bottom: 10rem;">
+            <div class="detail-label">
+                ${spot.subtitle} 
+                ${hasPhoto ? '<span class="status-badge">MISSION COMPLETE</span>' : ''}
+            </div>
+            <h1>${spot.title}</h1>
+            
+            <div class="detail-img-wrap">
+                <img src="${spot.image}" class="detail-img" alt="${spot.title}">
+            </div>
 
-                <div class="card-top-info">
-                    <span class="card-discount-tag">${spot.subtitle || 'Information'}</span>
+            <div class="glass-panel info-section">
+                <div class="info-item">
+                    <h3>都市計画のポイント</h3>
+                    <p>${spot.points}</p>
                 </div>
-
-                <div class="card-pagination">
-                    <div class="dot active"></div>
-                    <div class="dot"></div>
-                    <div class="dot"></div>
+                <div class="info-item">
+                    <h3>特色</h3>
+                    <p>${spot.features}</p>
                 </div>
-
-                <div class="card-content">
-                    <div class="card-title-row">
-                        <h1 class="card-title" style="letter-spacing: -0.02em;">${spot.title}</h1>
-                        <div class="card-badge-price" style="background: var(--blue-gradient); border: 1px solid rgba(255,255,255,0.2);">
-                             ${hasPhoto ? '✓' : 'SPOT ' + spot.id}
-                        </div>
-                    </div>
-
-                    <p class="card-description" style="font-weight: 400; opacity: 0.95;">
-                        ${spot.points}
-                    </p>
-
-                    <div class="card-tags-row">
-                        <div class="card-tag" style="background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.1); font-size: 0.75rem;">
-                            ${hasPhoto ? 'Mission Complete' : 'Discovery Mission'}
-                        </div>
-                        <div class="card-tag" style="background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.1); font-size: 0.75rem;">Liquid Glass</div>
-                    </div>
-
-                    <div class="card-action-area">
-                        ${!hasPhoto ? `
-                            <input type="file" id="camera-input" accept="image/*" capture="environment" style="display: none;">
-                            <button class="btn-card-action" data-action="take-photo">
-                                Take Photo
-                            </button>
-                        ` : `
-                            <a href="${photos[0]}" download="nakanoshima_${spot.id}.jpg" class="btn-card-action">
-                                Save Memory
-                            </a>
-                        `}
-                    </div>
+                <div class="info-item">
+                    <h3>課題</h3>
+                    <p>${spot.challenges}</p>
                 </div>
             </div>
+
+            <!-- Conditional Mission or Captured Photo -->
+            <div class="mission-status-area">
+                ${!hasPhoto ? `
+                <div class="mission-card">
+                    <span class="mission-tag">CURRENT MISSION</span>
+                    <p>この風景を撮影して、あなたの「しおり」に保存しましょう。</p>
+                    <input type="file" id="camera-input" accept="image/*" capture="environment" style="display: none;">
+                    <button class="btn btn-primary" data-action="take-photo">
+                        写真を撮る
+                    </button>
+                </div>
+                ` : `
+                <div class="captured-photo-section">
+                    <div class="captured-image-container full-width">
+                        <img src="${photos[0]}" class="captured-image">
+                    </div>
+                    <div class="photo-footer-actions">
+                        <a href="${photos[0]}" download="nakanoshima_${spot.id}.jpg" class="btn btn-secondary btn-save-large">
+                            この画像を端末に保存
+                        </a>
+                    </div>
+                </div>
+                `}
+            </div>
+
+            ${hasPhoto && photos.length > 1 ? `
+                <div class="user-photos-section">
+                    <h3>過去の撮影記録</h3>
+                    <div class="gallery-grid">
+                        ${photos.slice(1).map(photo => `
+                            <div class="gallery-item">
+                                <img src="${photo}" loading="lazy">
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            ` : ''}
+        </div>
+        
+        <div class="sticky-bottom">
+            <button class="btn btn-outline" data-action="switch-view" data-id="map">戻る</button>
         </div>
     `;
 }
