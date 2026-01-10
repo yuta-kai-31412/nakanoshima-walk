@@ -2,8 +2,11 @@ const SPOTS = [
     {
         id: "start",
         title: "中之島駅",
-        subtitle: "【スタート】",
-        isNavigationOnly: true,
+        subtitle: "【集合場所】",
+        points: "京阪中之島線「中之島駅」改札前集合。集合時間は 10:00 です。",
+        features: "駅から直接アクセス可能。地下空間の斬新なデザインが特徴。",
+        challenges: "西側の交通ハブとしての機能強化が期待されています。",
+        image: "./images/spot6.png", // Assuming valid placeholder
         lat: 34.68983027356296, lng: 135.4856469918394
     },
     {
@@ -89,8 +92,11 @@ const SPOTS = [
     {
         id: "goal",
         title: "淀屋橋",
-        subtitle: "【ゴール】",
-        isNavigationOnly: true,
+        subtitle: "【解散場所】",
+        points: "御堂筋線「淀屋橋駅」にて解散。周辺には多数のカフェがあります。",
+        features: "帰路：地下鉄御堂筋線・京阪本線。大阪駅・心斎橋方面へスムーズにアクセス可能。",
+        challenges: "夜間のライトアップと水辺の回遊性の向上が進められています。",
+        image: "./images/spot2.png",
         lat: 34.692106066710494, lng: 135.5031141232826
     }
 ];
