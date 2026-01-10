@@ -111,7 +111,7 @@ function initMap() {
     }).addTo(appState.map);
 
     // Road-based Routing Dashed Lines (OSRM)
-    const colorInactive = '#cbd5e1';
+    const colorInactive = '#6b7280';
     const colorActive = '#0ea5e9';
 
     for (let i = 0; i < SPOTS.length - 1; i++) {
