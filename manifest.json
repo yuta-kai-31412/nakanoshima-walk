@@ -4,8 +4,8 @@
   "description": "大阪・中之島の都市計画を学ぶ街歩きアプリ",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#000000",
-  "theme_color": "#0055ff",
+  "background_color": "#f4f7f4",
+  "theme_color": "#4a6a4a",
   "orientation": "portrait",
   "icons": [
     {

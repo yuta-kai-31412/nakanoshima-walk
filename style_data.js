@@ -79,7 +79,7 @@ const mapStyle =
       },
       "paint": {
         "fill-antialias": true,
-        "fill-color": "rgba(209, 227, 242, 1)"
+        "fill-color": "rgba(163, 204, 237, 1)"
       }
     },
     {
@@ -279,8 +279,8 @@ const mapStyle =
       "minzoom": 12,
       "paint": {
         "fill-antialias": true,
-        "fill-color": "rgba(168, 193, 211, 1)",
-        "fill-outline-color": "rgba(0, 0, 0, 1)"
+        "fill-color": "rgba(123, 157, 123, 1)",
+        "fill-outline-color": "rgba(123, 157, 123, 1)"
       }
     },
     {
