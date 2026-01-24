@@ -325,7 +325,7 @@ function renderStampRally(container) {
             </div>
 
             <div class="stamp-rally-actions animate-up" style="margin-top: 2rem;">
-                <button class="btn btn-primary" data-action="capture-sheet" style="width: 100%; margin-bottom: 1rem;">シートを画像として保存</button>
+                <button class="btn btn-primary" data-action="capture-sheet" style="width: 100%; margin-bottom: 1rem;">シートを保存</button>
                 <button class="btn btn-outline" data-action="switch-view" data-id="map" style="width: 100%;">マップに戻る</button>
             </div>
         </div>
