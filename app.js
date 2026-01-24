@@ -44,6 +44,8 @@ function init() {
             switchView('map');
         } else if (action === 'view-stamps') {
             switchView('stamp-rally');
+        } else if (action === 'capture-sheet') {
+            captureAndDownloadSheet();
         } else if (action === 'take-photo') {
             document.getElementById('camera-input').click();
         }
@@ -305,7 +307,7 @@ function renderStampRally(container) {
         const photo = appState.userPhotos[spot.id] ? appState.userPhotos[spot.id][0] : null;
         collageHtml += `
             <div class="collage-item">
-                ${photo ? `<img src="${photo}">` : `<div class="empty-marker">?</div>`}
+                ${photo ? `<img src="${photo}" crossOrigin="anonymous">` : `<div class="empty-marker">?</div>`}
                 <div class="stamp-id-label">${spot.id}</div>
             </div>
         `;
@@ -313,22 +315,43 @@ function renderStampRally(container) {
 
     container.innerHTML = `
         <div class="container stamp-rally-view fade-in">
-            <div class="stamp-rally-content animate-up">
+            <div id="stamp-rally-card" class="stamp-rally-content animate-up">
                 <div class="concept-tag">STAMPLARRY</div>
                 <h2 class="congrats-text">COMPLETE!</h2>
-    
                 
                 <div class="collage-container">
                     ${collageHtml}
                 </div>
+            </div>
 
-                <div class="button-group">
-                    <button class="btn btn-primary" onclick="window.print()" style="width: 100%; margin-bottom: 1rem;">シートを保存</button>
-                    <button class="btn btn-outline" data-action="switch-view" data-id="map" style="width: 100%;">マップに戻る</button>
-                </div>
+            <div class="stamp-rally-actions animate-up" style="margin-top: 2rem;">
+                <button class="btn btn-primary" data-action="capture-sheet" style="width: 100%; margin-bottom: 1rem;">シートを画像として保存</button>
+                <button class="btn btn-outline" data-action="switch-view" data-id="map" style="width: 100%;">マップに戻る</button>
             </div>
         </div>
     `;
+}
+
+async function captureAndDownloadSheet() {
+    const card = document.getElementById('stamp-rally-card');
+    if (!card) return;
+
+    try {
+        const canvas = await html2canvas(card, {
+            useCORS: true,
+            allowTaint: true,
+            scale: 2, // Higher quality
+            backgroundColor: "#f4f7f4"
+        });
+
+        const link = document.createElement('a');
+        link.download = 'nakanoshima-stamp-rally.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+    } catch (error) {
+        console.error("Capture failed:", error);
+        alert("画像の作成に失敗しました。");
+    }
 }
 
 function switchView(view) {
