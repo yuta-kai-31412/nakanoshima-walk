@@ -6,7 +6,7 @@ const SPOTS = [
         points: "京阪中之島線「中之島駅」改札前集合。集合時間は 10:00 です。",
         features: "駅から直接アクセス可能。地下空間の斬新なデザインが特徴。",
         challenges: "西側の交通ハブとしての機能強化が期待されています。",
-        image: "./images/spot6.png", // Assuming valid placeholder
+        image: "./images/start.png",
         lat: 34.68983027356296, lng: 135.4856469918394
     },
     {
@@ -16,7 +16,7 @@ const SPOTS = [
         points: "中之島西部の活性化を牽引する国際会議場。ダイナミックな造形が特徴です。",
         features: "黒川紀章設計によるメガストラクチャー。",
         challenges: "なにわ筋線新駅を見越した周辺整備とアクセス強化。",
-        image: "./images/spot6.png",
+        image: "./images/spot1.png",
         lat: 34.68911649877804, lng: 135.48599372506814
     },
     {
@@ -26,7 +26,7 @@ const SPOTS = [
         points: "日本を代表する科学館の一つ。科学の楽しさを伝える拠点です。",
         features: "世界最大級のプラネタリウムと体験型の展示が豊富。",
         challenges: "施設の老朽化に伴うリニューアルと魅力向上。",
-        image: "./images/spot1.png",
+        image: "./images/spot2.png",
         lat: 34.69105706913515, lng: 135.49199074852552
     },
     {
@@ -36,7 +36,7 @@ const SPOTS = [
         points: "2022年開館。近現代美術を中心に、都市に開かれた美術館を目指しています。",
         features: "1階から5階までを繋ぐ「パッサージュ」が都市の回遊性を高めます。",
         challenges: "周辺の美術館・科学館との連携による「中之島ミュージアムアイランド」の形成。",
-        image: "./images/spot4.png",
+        image: "./images/spot3.png",
         lat: 34.692466602921655, lng: 135.4918370225569
     },
     {
@@ -46,7 +46,7 @@ const SPOTS = [
         points: "大正期の近代建築の部材を再利用し、歴史遺産と最新のオフィスを共存。",
         features: "レンガ造りのテクスチャやレリーフを忠実に復元。",
         challenges: "歴史的な街並みの保存と、超高機能オフィスとしての利便性の両立。",
-        image: "./images/spot5.png",
+        image: "./images/spot4.png",
         lat: 34.693480337003635, lng: 135.49283315600908
     },
     {
@@ -56,7 +56,7 @@ const SPOTS = [
         points: "旧ホールの音響を継承しつつ、高層ビルとして建て替えられた文化拠点。",
         features: "赤いカーペットの大階段が、公演への高揚感を演出。",
         challenges: "ビジネス街における文化・芸術の発信力の継続的な向上。",
-        image: "./images/spot4.png",
+        image: "./images/spot5.png",
         lat: 34.69401870114622, lng: 135.49651923073694
     },
     {
@@ -66,8 +66,8 @@ const SPOTS = [
         points: "堂島川にかかる、5連アーチが美しい歩行者専用橋。",
         features: "もとは河川の浄化を目的とした可動ゲートでした。",
         challenges: "夜間のライトアップによる水辺の景観形成と維持管理。",
-        image: "./images/spot3.png",
-        lat: 34.69418407326279, lng: 135.50295013356384
+        image: "./images/spot6.png",
+        lat: 34.6941840732629, lng: 135.50295013356384
     },
     {
         id: 7,
@@ -76,7 +76,7 @@ const SPOTS = [
         points: "こどもたちが自由に本と出会い、豊かな感性を育む場所。",
         features: "壁一面を埋め尽くす本棚のデザインが圧巻です。",
         challenges: "多くの来場者に対応するための運営の最適化。",
-        image: "./images/spot1.png",
+        image: "./images/spot7.jpeg",
         lat: 34.69317715804339, lng: 135.50642591907967
     },
     {
@@ -86,7 +86,7 @@ const SPOTS = [
         points: "国の重要文化財。岡田信一郎、辰野金吾らによる建築。",
         features: "ネオ・ルネサンス様式の外観と、大規模免震レトロフィット。",
         challenges: "歴史的価値の保存と、市民の交流拠点としてのさらなる活用。",
-        image: "./images/spot2.png",
+        image: "./images/spot8.jpeg",
         lat: 34.69357099282691, lng: 135.50362053870964
     },
     {
@@ -95,8 +95,8 @@ const SPOTS = [
         subtitle: "【解散場所】",
         points: "御堂筋線「淀屋橋駅」にて解散。周辺には多数のカフェがあります。",
         features: "帰路：地下鉄御堂筋線・京阪本線。大阪駅・心斎橋方面へスムーズにアクセス可能。",
-        challenges: "夜間のライトアップと水辺の回遊性の向上が進められています。",
-        image: "./images/spot2.png",
+        challenges: "夜間のライトアップと水辺의 回遊性の向上が進められています。",
+        image: "./images/goal.jpeg",
         lat: 34.692106066710494, lng: 135.5031141232826
     }
 ];

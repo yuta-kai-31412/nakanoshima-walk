@@ -279,8 +279,8 @@ const mapStyle =
       "minzoom": 12,
       "paint": {
         "fill-antialias": true,
-        "fill-color": "rgba(123, 157, 123, 1)",
-        "fill-outline-color": "rgba(123, 157, 123, 1)"
+        "fill-color": "rgb(170, 170, 170)",
+        "fill-outline-color": "rgb(150, 150, 150)"
       }
     },
     {

@@ -141,31 +141,66 @@ function initMap() {
         }).addTo(appState.map);
     }
 
+    const updateMarkerSizes = () => {
+        const zoom = appState.map.getZoom();
+        // Base size at zoom 15 is 34px. Scale it based on zoom level.
+        const baseSize = 34;
+        const scale = Math.pow(1.5, zoom - 15); // Changed power from 2 to 1.5 for a more natural feel
+        const size = Math.max(26, Math.min(54, baseSize * scale)); // Lowered max size from 80 to 54
+        const fontSize = Math.max(10, Math.min(18, 13 * scale)); // Lowered max font size from 24 to 18
+
+        appState.map.eachLayer((layer) => {
+            if (layer instanceof L.Marker && layer.options.icon && layer.options.icon.options.className === 'custom-div-icon') {
+                const spotId = layer.options.spotId;
+                const spot = SPOTS.find(s => s.id === spotId);
+                const isVisited = appState.visited.includes(spotId);
+
+                let label = spotId;
+                let className = 'custom-marker';
+                if (spotId === 'start') {
+                    label = 'S';
+                    className += ' start-marker';
+                }
+                if (spotId === 'goal') {
+                    label = 'G';
+                    className += ' goal-marker';
+                }
+
+                const width = size;
+                const height = size;
+
+                const newIcon = L.divIcon({
+                    className: 'custom-div-icon',
+                    html: `<div class="${className} ${isVisited ? 'visited' : 'inactive'}" style="width: ${width}px; height: ${height}px; font-size: ${fontSize}px; border-radius: 50%;">${isVisited ? '✓' : label}</div>`,
+                    iconSize: [width, height],
+                    iconAnchor: [width / 2, height / 2]
+                });
+                layer.setIcon(newIcon);
+            }
+        });
+    };
+
     SPOTS.forEach((spot) => {
         const isVisited = appState.visited.includes(spot.id);
 
         let label = spot.id;
-        let className = 'custom-marker';
-        if (spot.id === 'start') {
-            label = 'START';
-            className += ' long-label';
-        }
-        if (spot.id === 'goal') {
-            label = 'GOAL';
-            className += ' long-label';
-        }
+        if (spot.id === 'start') label = 'S';
+        if (spot.id === 'goal') label = 'G';
 
         const icon = L.divIcon({
             className: 'custom-div-icon',
-            html: `<div class="${className} ${isVisited ? 'visited' : 'inactive'}">${isVisited ? '✓' : label}</div>`,
-            iconSize: spot.id === 'start' || spot.id === 'goal' ? [64, 34] : [34, 34],
-            iconAnchor: spot.id === 'start' || spot.id === 'goal' ? [32, 17] : [17, 17]
+            html: `<div class="custom-marker ${isVisited ? 'visited' : 'inactive'}">${isVisited ? '✓' : label}</div>`,
+            iconSize: [34, 34],
+            iconAnchor: [17, 17]
         });
 
-        L.marker([spot.lat, spot.lng], { icon })
+        L.marker([spot.lat, spot.lng], { icon, spotId: spot.id })
             .addTo(appState.map)
             .on('click', () => showDetail(spot.id));
     });
+
+    appState.map.on('zoomend', updateMarkerSizes);
+    updateMarkerSizes();
 }
 
 function renderDetail(container) {
