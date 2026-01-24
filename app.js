@@ -6,10 +6,7 @@ const appState = {
     map: null
 };
 
-function saveState() {
-    localStorage.setItem('nakanoshima_visited', JSON.stringify(appState.visited));
-    localStorage.setItem('nakanoshima_photos', JSON.stringify(appState.userPhotos));
-}
+
 
 function render() {
     const appContainer = document.getElementById('app');
@@ -317,7 +314,7 @@ function renderStampRally(container) {
     container.innerHTML = `
         <div class="container stamp-rally-view fade-in">
             <div class="stamp-rally-content animate-up">
-                <div class="concept-tag">Memory Gallery</div>
+                <div class="concept-tag">STAMPLARRY</div>
                 <h2 class="congrats-text">COMPLETE!</h2>
     
                 
@@ -351,12 +348,13 @@ async function handleUpload(event) {
 
     const spotId = appState.currentSpotId;
 
-    const reader = new FileReader();
-    reader.onload = function (e) {
+    try {
+        const compressedDataUrl = await compressImage(file, 1024); // Resize to max 1024px
+
         if (!appState.userPhotos[spotId]) {
             appState.userPhotos[spotId] = [];
         }
-        appState.userPhotos[spotId].unshift(e.target.result);
+        appState.userPhotos[spotId].unshift(compressedDataUrl);
 
         if (!appState.visited.includes(spotId)) {
             appState.visited.push(spotId);
@@ -364,8 +362,53 @@ async function handleUpload(event) {
 
         saveState();
         render();
-    };
-    reader.readAsDataURL(file);
+    } catch (error) {
+        console.error("Failed to process image:", error);
+        alert("画像の処理に失敗しました。容量不足の可能性があります。");
+    }
+}
+
+function compressImage(file, maxWidth) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = (e) => {
+            const img = new Image();
+            img.src = e.target.result;
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                let width = img.width;
+                let height = img.height;
+
+                if (width > maxWidth) {
+                    height = (maxWidth / width) * height;
+                    width = maxWidth;
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+
+                // Compress to JPEG with 0.7 quality
+                resolve(canvas.toDataURL('image/jpeg', 0.7));
+            };
+            img.onerror = reject;
+        };
+        reader.onerror = reject;
+    });
+}
+
+function saveState() {
+    try {
+        localStorage.setItem('nakanoshima_visited', JSON.stringify(appState.visited));
+        localStorage.setItem('nakanoshima_photos', JSON.stringify(appState.userPhotos));
+    } catch (e) {
+        console.error("LocalStorage save failed:", e);
+        if (e.name === 'QuotaExceededError') {
+            alert("ブラウザの保存容量を超えました。古い写真を削除するか、ブラウザの設定を確認してください。");
+        }
+    }
 }
 
 init();
