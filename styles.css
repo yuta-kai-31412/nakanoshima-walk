@@ -206,8 +206,93 @@ h3 {
 
 
 .progress-text {
-    font-size: 1.1rem;
+    font-size: 0.85rem;
     font-weight: 800;
+    color: var(--text-sub);
+    margin-top: 12px;
+    display: block;
+}
+
+.progress-container {
+    width: 240px;
+    position: relative;
+    padding-top: 24px;
+}
+
+.progress-track {
+    width: 100%;
+    height: 6px;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 3px;
+    position: relative;
+    overflow: visible;
+}
+
+.progress-tick-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.progress-tick {
+    position: absolute;
+    top: -2px;
+    width: 2px;
+    height: 10px;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 1px;
+    transform: translateX(-50%);
+}
+
+.progress-tick.reached {
+    background: var(--primary);
+    opacity: 0.5;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--primary);
+    border-radius: 3px;
+    transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+}
+
+.walker-icon {
+    position: absolute;
+    right: -14px;
+    top: -34px;
+    font-size: 28px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    animation: walk-bounce 0.6s infinite alternate ease-in-out;
+    z-index: 5;
+}
+
+.goal-icon-progress {
+    position: absolute;
+    right: -17px;
+    top: -24px;
+    font-size: 18px;
+    filter: grayscale(0.5);
+    opacity: 0.8;
+}
+
+.goal-reached .goal-icon-progress {
+    filter: grayscale(0);
+    opacity: 1;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes walk-bounce {
+    from {
+        transform: translateY(0) rotate(-5deg) scaleX(-1);
+    }
+
+    to {
+        transform: translateY(-4px) rotate(5deg) scaleX(-1);
+    }
 }
 
 /* --- Marker Styles --- */
@@ -270,7 +355,38 @@ h3 {
 
 .detail-content h1 {
     font-size: 1.75rem;
-    margin-bottom: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.detail-subtitle {
+    font-size: 0.9rem;
+    color: var(--text-sub);
+    font-weight: 700;
+    margin-bottom: 2rem;
+}
+
+.spot-info-section {
+    text-align: left;
+    margin-bottom: 2.5rem;
+}
+
+.info-block {
+    margin-bottom: 1.5rem;
+}
+
+.info-block h3 {
+    font-size: 1rem;
+    color: var(--primary);
+    border-left: 4px solid var(--primary);
+    padding-left: 12px;
+    margin-bottom: 0.5rem;
+}
+
+.info-block p {
+    font-size: 0.95rem;
+    color: var(--text-main);
+    line-height: 1.7;
+    padding-left: 16px;
 }
 
 
@@ -322,7 +438,84 @@ h3 {
     }
 }
 
-/* Hide Leaflet Routing UI button on map */
-.leaflet-routing-container {
+/* --- Stamp Rally View --- */
+.stamp-rally-view {
+    padding: 2rem 1rem;
+    background: var(--bg-main);
+    text-align: center;
+    min-height: 100vh;
+}
+
+.stamp-rally-content {
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.85) 100%),
+        url('./nakanoshima_hero_concept.png');
+    background-size: cover;
+    background-position: center;
+    padding: 2.5rem 1.5rem;
+    border-radius: 32px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+    max-width: 500px;
+    margin: 0 auto;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Hide Leaflet Routing UI elements */
+.leaflet-routing-container,
+.leaflet-routing-error,
+.leaflet-routing-icon,
+.leaflet-routing-collapse-button {
     display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+.collage-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin: 2rem 0;
+    padding: 12px;
+    background: #f8fafc;
+    border: 2px dashed #cbd5e1;
+    border-radius: 16px;
+}
+
+.collage-item {
+    aspect-ratio: 1;
+    background: #e2e8f0;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.collage-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.collage-item .empty-marker {
+    font-size: 24px;
+    color: #94a3b8;
+}
+
+.stamp-id-label {
+    position: absolute;
+    bottom: 2px;
+    right: 4px;
+    font-size: 10px;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.8);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.congrats-text {
+    margin-bottom: 0.5rem;
+    color: var(--primary);
 }

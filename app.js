@@ -25,6 +25,9 @@ function render() {
         case 'detail':
             renderDetail(appContainer);
             break;
+        case 'stamp-rally':
+            renderStampRally(appContainer);
+            break;
     }
 }
 
@@ -42,6 +45,8 @@ function init() {
             switchView(id);
         } else if (action === 'start-app') {
             switchView('map');
+        } else if (action === 'view-stamps') {
+            switchView('stamp-rally');
         } else if (action === 'take-photo') {
             document.getElementById('camera-input').click();
         }
@@ -74,12 +79,35 @@ function renderStart(container) {
 function renderMap(container) {
     const visitedCount = appState.visited.filter(id => typeof id === 'number').length;
     const totalCount = SPOTS.filter(s => typeof s.id === 'number').length;
+    const progressPercent = totalCount > 0 ? (visitedCount / totalCount) * 100 : 0;
+
+    const isGoalReached = appState.visited.length >= SPOTS.filter(s => typeof s.id === 'number').length;
 
     container.innerHTML = `
         <div class="container map-view-container fade-in">
             <div id="map"></div>
-            <div class="map-overlay-bottom">
-                <div class="progress-text">${visitedCount} / ${totalCount} Spots discovered</div>
+            <div class="map-overlay-bottom centered ${isGoalReached ? 'goal-reached' : ''}" 
+                 ${isGoalReached ? 'data-action="view-stamps" style="cursor: pointer;"' : ''}>
+                <div class="progress-container">
+                    <div class="progress-track">
+                        <div class="progress-tick-container">
+                            ${SPOTS.filter(s => typeof s.id === 'number').map((s, index, arr) => {
+        const percent = ((index + 1) / arr.length) * 100;
+        const reached = appState.visited.includes(s.id);
+        return `<div class="progress-tick ${reached ? 'reached' : ''}" style="left: ${percent}%;"></div>`;
+    }).join('')}
+                        </div>
+                        <div class="progress-fill" style="width: ${progressPercent}%;">
+                            <div class="walker-icon">🚶‍♂️</div>
+                        </div>
+                        <div class="goal-icon-progress">🚩</div>
+                    </div>
+                </div>
+                <span class="progress-text">
+                    ${totalCount > 0
+            ? (isGoalReached ? 'Tap to view your Stamp Sheet! ✨' : `${visitedCount} / ${totalCount} Spots discovered`)
+            : 'Welcome to Nakanoshima! Walk to the Goal 🚩'}
+                </span>
             </div>
         </div>
     `;
@@ -158,20 +186,22 @@ function initMap() {
                 let label = spotId;
                 let className = 'custom-marker';
                 if (spotId === 'start') {
-                    label = 'S';
+                    label = 'START';
                     className += ' start-marker';
                 }
                 if (spotId === 'goal') {
-                    label = 'G';
+                    label = 'GOAL';
                     className += ' goal-marker';
                 }
 
-                const width = size;
+                // For START/GOAL, make it a pill shape (capsule)
+                const isLong = spotId === 'start' || spotId === 'goal';
+                const width = isLong ? size * 2.2 : size;
                 const height = size;
 
                 const newIcon = L.divIcon({
                     className: 'custom-div-icon',
-                    html: `<div class="${className} ${isVisited ? 'visited' : 'inactive'}" style="width: ${width}px; height: ${height}px; font-size: ${fontSize}px; border-radius: 50%;">${isVisited ? '✓' : label}</div>`,
+                    html: `<div class="${className} ${isVisited ? 'visited' : 'inactive'}" style="width: ${width}px; height: ${height}px; font-size: ${fontSize}px; border-radius: ${height / 2}px;">${isVisited ? '✓' : label}</div>`,
                     iconSize: [width, height],
                     iconAnchor: [width / 2, height / 2]
                 });
@@ -184,14 +214,18 @@ function initMap() {
         const isVisited = appState.visited.includes(spot.id);
 
         let label = spot.id;
-        if (spot.id === 'start') label = 'S';
-        if (spot.id === 'goal') label = 'G';
+        if (spot.id === 'start') label = 'START';
+        if (spot.id === 'goal') label = 'GOAL';
+
+        const isLong = spot.id === 'start' || spot.id === 'goal';
+        const width = isLong ? 74 : 34; // Initial size based on zoom 15
+        const height = 34;
 
         const icon = L.divIcon({
             className: 'custom-div-icon',
-            html: `<div class="custom-marker ${isVisited ? 'visited' : 'inactive'}">${isVisited ? '✓' : label}</div>`,
-            iconSize: [34, 34],
-            iconAnchor: [17, 17]
+            html: `<div class="custom-marker ${isVisited ? 'visited' : 'inactive'}" style="width: ${width}px; height: ${height}px; border-radius: ${height / 2}px;">${isVisited ? '✓' : label}</div>`,
+            iconSize: [width, height],
+            iconAnchor: [width / 2, height / 2]
         });
 
         L.marker([spot.lat, spot.lng], { icon, spotId: spot.id })
@@ -219,6 +253,25 @@ function renderDetail(container) {
             
             <div class="detail-content centered-content">
                 <h1>${spot.title}</h1>
+                <p class="detail-subtitle">${spot.subtitle || ''}</p>
+
+                <div class="spot-info-section">
+                    ${spot.points ? `
+                    <div class="info-block">
+                        <h3>集合場所</h3>
+                        <p>${spot.points.replace(/\n/g, '<br>')}</p>
+                    </div>` : ''}
+                    ${spot.features ? `
+                    <div class="info-block">
+                        <h3>アクセス例</h3>
+                        <p>${spot.features.replace(/\n/g, '<br>')}</p>
+                    </div>` : ''}
+                    ${spot.challenges ? `
+                    <div class="info-block">
+                        <h3>Challenges</h3>
+                        <p>${spot.challenges.replace(/\n/g, '<br>')}</p>
+                    </div>` : ''}
+                </div>
                 
                 ${!isStartOrGoal ? `
                 <div class="mission-status-area">
@@ -245,6 +298,41 @@ function renderDetail(container) {
     `;
 }
 
+
+function renderStampRally(container) {
+    let photoSpots = SPOTS.filter(s => typeof s.id === 'number');
+    if (photoSpots.length === 0) photoSpots = SPOTS; // Show all if no numbered spots
+
+    let collageHtml = '';
+    photoSpots.forEach(spot => {
+        const photo = appState.userPhotos[spot.id] ? appState.userPhotos[spot.id][0] : null;
+        collageHtml += `
+            <div class="collage-item">
+                ${photo ? `<img src="${photo}">` : `<div class="empty-marker">?</div>`}
+                <div class="stamp-id-label">${spot.id}</div>
+            </div>
+        `;
+    });
+
+    container.innerHTML = `
+        <div class="container stamp-rally-view fade-in">
+            <div class="stamp-rally-content animate-up">
+                <div class="concept-tag">Memory Gallery</div>
+                <h2 class="congrats-text">COMPLETE!</h2>
+    
+                
+                <div class="collage-container">
+                    ${collageHtml}
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="window.print()" style="width: 100%; margin-bottom: 1rem;">シートを保存</button>
+                    <button class="btn btn-outline" data-action="switch-view" data-id="map" style="width: 100%;">マップに戻る</button>
+                </div>
+            </div>
+        </div>
+    `;
+}
 
 function switchView(view) {
     appState.view = view;
